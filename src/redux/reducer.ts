@@ -25,8 +25,9 @@ export const getMovieList = createAsyncThunk(
        return response
    }
 )
-export const movieReducer = createSlice({
-    name: 'movie',
+
+export const movieListReducer = createSlice({
+    name: 'movieList',
     initialState,
     reducers: {
         changePage: (state, action) => {
@@ -48,5 +49,5 @@ export const movieReducer = createSlice({
     }
 })
 
-export const {changePage, setSearchText} = movieReducer.actions
-export default movieReducer.reducer
+export const {changePage, setSearchText} = movieListReducer.actions
+export default movieListReducer.reducer

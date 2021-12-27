@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import Loader from "../components/Loader"
 import { MovieList } from "../components/MovieList"
 import { Paginator } from "../components/Pagination"
 import { Search } from "../components/Search"
@@ -6,11 +7,14 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks"
 import { changePage, getMovieList, setSearchText } from "../redux/reducer"
 
 export const Movies = () => {
-    const movies = useAppSelector(state => state.movieReducer.movieList)
-    const loading = useAppSelector(state => state.movieReducer.loading)
-    const totalPages = useAppSelector(state => state.movieReducer.totalResults)
-    const page = useAppSelector(state => state.movieReducer.currentPage)
-    const search = useAppSelector(state => state.movieReducer.search)
+    const {
+        movieList, 
+        loading, 
+        totalResults, 
+        currentPage, 
+        search
+    } = useAppSelector(state => state.movieListReducer)
+
 
     const dispatch = useAppDispatch()
     
@@ -31,9 +35,15 @@ export const Movies = () => {
     return <div className="container"> 
         <Search search={searchMovie} />
         {
-            !loading ? <MovieList movies={movies} /> : 'No data'
+            !loading ? 
+            movieList ? 
+            <MovieList movies={movieList} /> : 
+            'No data' : 
+            <Loader />
         }
-        <Paginator totalPages={Math.floor(totalPages / 10)} currentPage={page} changePage={setPage} />
+        <Paginator 
+            totalPages={Math.floor(totalResults / 10)} 
+            currentPage={currentPage} changePage={setPage} />
     </div>
 }
 
