@@ -22,6 +22,8 @@ export interface movieDetailsType {
     Metascore: string
     imdbRating: string
     BoxOffice: string
+    Error: boolean
+    Response: string
     Ratings: RatingType[]
 }
 

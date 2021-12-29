@@ -5,6 +5,9 @@ import { Paginator } from "../components/Pagination"
 import { Search } from "../components/Search"
 import { useAppDispatch, useAppSelector } from "../hooks/hooks"
 import { changePage, getMovieList, setSearchText } from "../redux/reducer"
+import errImg from '../ops.png'
+import nodata from '../nodata.png'
+
 
 export const Movies = () => {
     const {
@@ -12,7 +15,8 @@ export const Movies = () => {
         loading, 
         totalResults, 
         currentPage, 
-        search
+        search,
+        error
     } = useAppSelector(state => state.movieListReducer)
 
 
@@ -31,19 +35,28 @@ export const Movies = () => {
         dispatch(changePage(page))
         dispatch(getMovieList({search, page}))
     }
+
+    if (error) {
+        return <div>
+            <img src={errImg} width={'600px'} />
+        </div>
+    }
     
     return <div className="container"> 
         <Search search={searchMovie} />
         {
-            !loading ? 
+            !loading && !error ? 
             movieList ? 
             <MovieList movies={movieList} /> : 
-            'No data' : 
+            <img src={nodata} /> : 
             <Loader />
         }
-        <Paginator 
+        {
+            totalResults && <Paginator 
             totalPages={Math.floor(totalResults / 10)} 
             currentPage={currentPage} changePage={setPage} />
+        }
+        
     </div>
 }
 

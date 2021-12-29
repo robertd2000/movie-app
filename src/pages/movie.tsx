@@ -5,11 +5,12 @@ import { MovieDetails } from "../components/MovieDetails";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { getMovieDetails } from "../redux/movieDetailsReducer";
 import { addMovie } from "../redux/savedReducer";
+import errImg from '../ops.png'
 
 export const Movie = () => {
     const {id = ''} = useParams()
     const dispatch = useAppDispatch()
-    const {movieDetails, loading} = useAppSelector(state => state.movieDetailsReducer)
+    const {movieDetails, loading, error} = useAppSelector(state => state.movieDetailsReducer)
     
     useEffect(() => {
         dispatch(getMovieDetails(id))
@@ -19,10 +20,24 @@ export const Movie = () => {
         dispatch(addMovie(data))
     }
 
+    if(movieDetails.Response === 'False') {
+        console.log('error');
+        
+        return <div>
+            <img src={errImg} width={'600px'} />
+            <h1>{movieDetails.Error}</h1>
+            </div> 
+    }
+
+    if (error) {
+        return <div>
+            <img src={errImg} width={'600px'} />
+        </div>
+    }
     return (
         <div>
             {
-                !loading ? 
+                !loading && !error  ? 
                 movieDetails ? 
                 <MovieDetails movieDetails={movieDetails} saveMovie={saveMovie} imdbID={id}/> : 
                 'No data' : 

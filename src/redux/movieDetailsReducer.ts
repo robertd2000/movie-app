@@ -7,7 +7,7 @@ import { movieDetailsType, movieType } from "../types";
 interface MovieState {
     movieDetails: movieDetailsType
     loading: boolean
-
+    error: boolean
 }
 
 
@@ -28,9 +28,12 @@ const initialState: MovieState = {
         Metascore: '',
         imdbRating: '',
         BoxOffice: '',
-        Ratings: []
+        Ratings: [],
+        Error: false,
+        Response: ''
     },
-    loading: false
+    loading: false,
+    error: false
 }
 
 
@@ -56,6 +59,10 @@ export const movieDetailsReducer = createSlice({
         .addCase(getMovieDetails.fulfilled, (state, action) => {
             state.movieDetails = action.payload
             state.loading = false
+            state.error = false
+        })
+        .addCase(getMovieDetails.rejected, (state, action) => {
+            state.error = true
         })
     }
 })

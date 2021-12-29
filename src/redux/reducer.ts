@@ -7,7 +7,8 @@ interface MovieState {
     loading: boolean,
     totalResults: number,
     search: string,
-    currentPage: number
+    currentPage: number,
+    error: boolean
 }
 
 const initialState: MovieState = {
@@ -15,7 +16,8 @@ const initialState: MovieState = {
     loading: false,
     totalResults: 0,
     search: 'man',
-    currentPage: 1
+    currentPage: 1,
+    error: false
 }
 
 export const getMovieList = createAsyncThunk(
@@ -45,6 +47,10 @@ export const movieListReducer = createSlice({
             state.movieList = action.payload.Search
             state.totalResults = action.payload.totalResults
             state.loading = false
+            state.error = false
+        })
+        .addCase(getMovieList.rejected, (state, action) =>{
+            state.error = true
         })
     }
 })

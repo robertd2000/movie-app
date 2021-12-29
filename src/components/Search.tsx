@@ -13,10 +13,11 @@ export const Search: React.FC<SearchType> = ({search}) => {
 
     const clickJHandler = (e: React.SyntheticEvent<HTMLInputElement>) => {
         e.preventDefault()
-        search(searchValue)
-        console.log(searchValue);
-        
+        if (searchValue.length > 0) {
+            search(searchValue)
+        }
     }
+
     return (
         <form className="search">
             <input type="text" defaultValue={searchValue} onChange={inputHandler} />
